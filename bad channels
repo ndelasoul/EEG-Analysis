@@ -12,7 +12,7 @@ def init(in_file):
     data = match(in_file)
     ch_list = []
     for i in data:
-        if int(i[1]) > 1:
+        if int(i[1]) >= 1:
             ch_list.append(i[0])
     ch_list = list(dict.fromkeys(ch_list))
     print(ch_list)
