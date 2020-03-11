@@ -8,6 +8,11 @@ location for loading the raw data in mne. So, you have to edit the file location
 import os
 import mne
 
+"""
+this initiates the other definitions and creates a list for all the channels that have impedence >= 1. 
+I have a problem where some channels were duplicated, so I changed ch_list to a dictionary and back to a list again
+to fix this problem.
+"""
 def init(in_file):
     data = match(in_file)
     ch_list = []
@@ -18,6 +23,10 @@ def init(in_file):
     print(ch_list)
     return()
 
+"""
+This matches the list of eeg channels with the channels that have impedances in the .vhdr file. It removes '\n'
+found in the .vhdr file and splits the strings removing the semicolon.
+"""
 def match(in_file):
     bad = load()
     temp = []
@@ -30,6 +39,10 @@ def match(in_file):
                     fix.append(temp.split(':'))
     return(fix)
 
+"""
+This loads the list of channels in the mne raw file places it in the list channels. The a semicolon is added to
+each element to match that of the .vhdr file. 
+"""
 def load():
     channels = []
     bad = []
