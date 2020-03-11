@@ -1,0 +1,42 @@
+#!/usr/bin/python
+
+"""
+Start the script using the init() definition. It works, however, I forgot to setup something to carry over the file
+location for loading the raw data in mne. So, you have to edit the file location on line 36.
+"""
+
+import os
+import mne
+
+def init(in_file):
+    data = match(in_file)
+    ch_list = []
+    for i in data:
+        if int(i[1]) > 1:
+            ch_list.append(i[0])
+    ch_list = list(dict.fromkeys(ch_list))
+    print(ch_list)
+    return()
+
+def match(in_file):
+    bad = load()
+    temp = []
+    fix = []
+    with open(in_file, 'r') as f:
+        for line in f:
+            for i in bad:
+                if i in line:
+                    temp = line.strip('\n')
+                    fix.append(temp.split(':'))
+    return(fix)
+
+def load():
+    channels = []
+    bad = []
+    raw = mne.io.read_raw_brainvision('Downloads/cc_ptsd_practice/cc_ptsd_practice/sub-010002.vhdr')
+    channels.extend(raw.ch_names + ['Gnd', 'Ref'])
+    i = 0
+    while i < len(channels):
+        bad[i:i+1] = [str(channels[i]) + ':']
+        i += 1
+    return(bad)
